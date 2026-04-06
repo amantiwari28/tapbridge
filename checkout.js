@@ -1,5 +1,7 @@
 (function () {
 
+  const BASE_URL = "https://tapbridge-backend.onrender.com";
+
   let activeSession = null;
   let interval = null;
   let modalOpen = false;
@@ -33,7 +35,7 @@
 
         try {
           // STEP 1
-          const sessionRes = await fetch("http://127.0.0.1:8000/v1/sessions", {
+          const sessionRes = await fetch(`${BASE_URL}/v1/sessions`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ amount: 1000, currency: "INR" }),
@@ -46,7 +48,7 @@
 
           // STEP 2
           const detectRes = await fetch(
-            `http://127.0.0.1:8000/v1/sessions/${sessionId}/detect`,
+            `${BASE_URL}/v1/sessions/${sessionId}/detect`,
             { method: "POST" }
           );
 
@@ -74,7 +76,6 @@
 
         if (interval) clearInterval(interval);
 
-        // OVERLAY
         const overlay = document.createElement("div");
         Object.assign(overlay.style, {
           position: "fixed",
@@ -90,7 +91,6 @@
           zIndex: "9999"
         });
 
-        // MODAL (PREMIUM)
         const modal = document.createElement("div");
         Object.assign(modal.style, {
           background: "linear-gradient(135deg, #ffffff, #f5f7fa)",
@@ -103,7 +103,6 @@
           position: "relative"
         });
 
-        // CLOSE BUTTON
         const closeBtn = document.createElement("button");
         closeBtn.innerText = "✖";
         Object.assign(closeBtn.style, {
@@ -125,10 +124,9 @@
         title.innerText = "Scan QR to Pay";
 
         const img = document.createElement("img");
-        img.src = `http://127.0.0.1:8000/v1/sessions/${sessionId}/qr`;
+        img.src = `${BASE_URL}/v1/sessions/${sessionId}/qr`;
         img.style.width = "200px";
 
-        // AMOUNT (FIXED)
         const amountText = document.createElement("p");
         amountText.innerText = "Amount: ₹" + amount;
         amountText.style.fontWeight = "bold";
@@ -142,7 +140,6 @@
         statusText.innerText = "Waiting for payment...";
         statusText.style.fontWeight = "500";
 
-        // LOADER
         const loader = document.createElement("div");
         Object.assign(loader.style, {
           border: "4px solid #eee",
@@ -158,7 +155,7 @@
         btn.innerText = "Simulate Payment";
 
         btn.onclick = async () => {
-          await fetch("http://127.0.0.1:8000/webhook/payment", {
+          await fetch(`${BASE_URL}/webhook/payment`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ session_id: sessionId }),
@@ -172,13 +169,12 @@
         overlay.appendChild(modal);
         document.body.appendChild(overlay);
 
-        // POLLING
         setTimeout(() => {
 
           interval = setInterval(async () => {
             try {
               const res = await fetch(
-                `http://127.0.0.1:8000/v1/sessions/${sessionId}/status`
+                `${BASE_URL}/v1/sessions/${sessionId}/status`
               );
 
               const data = await res.json();
@@ -210,7 +206,6 @@
 
         }, 2000);
 
-        // TIMEOUT (FAILURE)
         setTimeout(() => {
           if (modalOpen) {
             clearInterval(interval);
