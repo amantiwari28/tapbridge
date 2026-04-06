@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QR Payment</title>
+</head>
+<body style="text-align:center; margin-top:50px;">
+
+<h2>Scan QR to Pay</h2>
+
+<img id="qrImage" width="200"/>
+
+<br><br>
+
+<button onclick="completePayment()">Simulate Payment</button>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const session_id = urlParams.get("session_id");
+
+  // ✅ Load QR
+  document.getElementById("qrImage").src =
+    `http://127.0.0.1:8000/v1/sessions/${session_id}/qr`;
+
+  // ✅ Simulate Payment
+  async function completePayment() {
+    await fetch(
+      `http://127.0.0.1:8000/v1/sessions/${session_id}/complete`,
+      { method: "POST" }
+    );
+  }
+
+  // ✅ 🔥 POLLING
+  const interval = setInterval(async () => {
+    const res = await fetch(
+      `http://127.0.0.1:8000/v1/sessions/${session_id}/status`
+    );
+
+    const data = await res.json();
+
+    console.log("Checking status:", data);
+
+    if (data.status === "success") {
+      clearInterval(interval);
+      alert("✅ Payment Successful!");
+    }
+  }, 3000);
+</script>
+
+</body>
+</html>
