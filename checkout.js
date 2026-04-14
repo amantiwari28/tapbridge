@@ -9,19 +9,20 @@
   window.TapBridge = {
     init: function () {
 
-      console.log("INIT CALLED");
+      console.log("TapBridge INIT");
 
       const button = document.createElement("button");
       button.innerText = "Pay with TapBridge";
 
       Object.assign(button.style, {
-        padding: "12px 24px",
-        background: "#4CAF50",
-        color: "white",
+        padding: "14px 26px",
+        background: "linear-gradient(135deg,#00ff99,#00ccff)",
+        color: "black",
         border: "none",
         cursor: "pointer",
         fontSize: "16px",
-        borderRadius: "6px"
+        borderRadius: "30px",
+        fontWeight: "bold"
       });
 
       document.body.appendChild(button);
@@ -34,7 +35,7 @@
         button.innerText = "Processing...";
 
         try {
-          // STEP 1
+          // STEP 1: Create session
           const sessionRes = await fetch(`${BASE_URL}/v1/sessions`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -42,11 +43,13 @@
           });
 
           const session = await sessionRes.json();
-          const sessionId = session.session_id;
 
+          if (!session.session_id) throw new Error("Session failed");
+
+          const sessionId = session.session_id;
           activeSession = sessionId;
 
-          // STEP 2
+          // STEP 2: Detect route
           const detectRes = await fetch(
             `${BASE_URL}/v1/sessions/${sessionId}/detect`,
             { method: "POST" }
@@ -54,7 +57,7 @@
 
           const detect = await detectRes.json();
 
-          // STEP 3
+          // STEP 3: Show UI
           if (detect.route === "QR") {
             showQR(sessionId, session.amount);
           } else {
@@ -63,17 +66,17 @@
 
         } catch (err) {
           console.error(err);
-          alert("❌ Payment failed");
+          alert("❌ Payment failed. Backend not responding.");
         }
 
         button.disabled = false;
         button.innerText = "Pay with TapBridge";
       };
 
+      // ===================== QR MODAL =====================
       function showQR(sessionId, amount) {
 
         modalOpen = true;
-
         if (interval) clearInterval(interval);
 
         const overlay = document.createElement("div");
@@ -83,8 +86,8 @@
           left: "0",
           width: "100%",
           height: "100%",
-          backdropFilter: "blur(8px)",
-          background: "rgba(0,0,0,0.5)",
+          backdropFilter: "blur(10px)",
+          background: "rgba(0,0,0,0.6)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -93,13 +96,13 @@
 
         const modal = document.createElement("div");
         Object.assign(modal.style, {
-          background: "linear-gradient(135deg, #ffffff, #f5f7fa)",
+          background: "#fff",
           padding: "30px",
           borderRadius: "20px",
           textAlign: "center",
           width: "340px",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
-          fontFamily: "Segoe UI, sans-serif",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+          fontFamily: "Segoe UI",
           position: "relative"
         });
 
@@ -131,19 +134,13 @@
         amountText.innerText = "Amount: ₹" + amount;
         amountText.style.fontWeight = "bold";
 
-        const sessionInfo = document.createElement("p");
-        sessionInfo.innerText = "Session: " + sessionId;
-        sessionInfo.style.fontSize = "11px";
-        sessionInfo.style.color = "gray";
-
         const statusText = document.createElement("p");
         statusText.innerText = "Waiting for payment...";
-        statusText.style.fontWeight = "500";
 
         const loader = document.createElement("div");
         Object.assign(loader.style, {
           border: "4px solid #eee",
-          borderTop: "4px solid #4CAF50",
+          borderTop: "4px solid #00cc66",
           borderRadius: "50%",
           width: "30px",
           height: "30px",
@@ -165,60 +162,43 @@
           btn.disabled = true;
         };
 
-        modal.append(closeBtn, title, img, amountText, sessionInfo, loader, statusText, btn);
+        modal.append(closeBtn, title, img, amountText, loader, statusText, btn);
         overlay.appendChild(modal);
         document.body.appendChild(overlay);
 
-        setTimeout(() => {
+        // ===================== POLLING =====================
+        interval = setInterval(async () => {
+          try {
+            const res = await fetch(`${BASE_URL}/v1/sessions/${sessionId}/status`);
+            const data = await res.json();
 
-          interval = setInterval(async () => {
-            try {
-              const res = await fetch(
-                `${BASE_URL}/v1/sessions/${sessionId}/status`
-              );
-
-              const data = await res.json();
-
-              if (
-                modalOpen &&
-                sessionId === activeSession &&
-                data &&
-                data.status === "success"
-              ) {
-
-                clearInterval(interval);
-                modalOpen = false;
-
-                modal.innerHTML = `
-                  <h2 style="color: green;">✅ Payment Successful</h2>
-                  <p>Transaction completed</p>
-                `;
-
-                setTimeout(() => {
-                  document.body.removeChild(overlay);
-                }, 2000);
-              }
-
-            } catch (err) {
-              console.error(err);
+            if (data.status === "success") {
+              clearInterval(interval);
+              modal.innerHTML = `
+                <h2 style="color:green;">✅ Payment Successful</h2>
+                <p>Transaction Completed</p>
+              `;
+              setTimeout(() => document.body.removeChild(overlay), 2000);
             }
-          }, 3000);
 
-        }, 2000);
+          } catch (err) {
+            console.error("Polling error", err);
+          }
+        }, 3000);
 
+        // ===================== TIMEOUT =====================
         setTimeout(() => {
           if (modalOpen) {
             clearInterval(interval);
-            modalOpen = false;
-
             modal.innerHTML = `
-              <h2 style="color: red;">❌ Payment Timeout</h2>
+              <h2 style="color:red;">❌ Timeout</h2>
               <p>Please try again</p>
             `;
           }
         }, 30000);
       }
 
+      // ===================== UPI FALLBACK =====================
       function openUPI() {
         window.location.href =
           "upi://pay?pa=test@upi&pn=TapBridge&am=100&cu=INR";
