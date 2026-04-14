@@ -5,14 +5,19 @@
 <title>TapBridge</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
+* {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #000;
-  color: #fff;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: white;
   overflow-x: hidden;
 }
 
@@ -20,85 +25,104 @@ body {
 body::before {
   content: "";
   position: fixed;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(0,255,150,0.15), transparent);
-  top: -100px;
-  left: -100px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
+  top: -200px;
+  left: -200px;
   filter: blur(120px);
 }
 
-/* Container */
-.container {
-  width: 90%;
-  margin: auto;
-  text-align: center;
+/* Navbar */
+.nav {
+  position: fixed;
+  width: 100%;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 18px;
 }
 
 /* Hero */
 .hero {
   height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   flex-direction: column;
+  padding: 0 20px;
 }
 
-/* Headings */
-h1 {
+.hero h1 {
   font-size: 64px;
+  font-weight: 600;
   line-height: 1.2;
   animation: fadeUp 1s ease forwards;
 }
 
-p {
-  color: #aaa;
+.hero p {
+  color: #888;
+  margin-top: 20px;
   animation: fadeUp 1.5s ease forwards;
 }
 
 /* Button */
 .btn {
-  padding: 14px 28px;
-  background: linear-gradient(135deg, #00ff99, #00ccff);
-  color: black;
-  border-radius: 30px;
-  font-weight: bold;
-  text-decoration: none;
   margin-top: 30px;
+  padding: 14px 30px;
+  border-radius: 30px;
+  background: white;
+  color: black;
+  text-decoration: none;
+  font-weight: 600;
   transition: 0.3s;
-  box-shadow: 0 0 20px rgba(0,255,150,0.5);
 }
 
 .btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 40px rgba(0,255,150,0.8);
 }
 
 /* Sections */
 section {
-  padding: 100px 0;
+  padding: 120px 20px;
+  text-align: center;
 }
 
 /* Cards */
-.steps {
+.cards {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
   flex-wrap: wrap;
+  margin-top: 60px;
 }
 
 .card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04);
   padding: 30px;
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
+  border-radius: 20px;
   width: 260px;
-  transition: 0.3s;
+  backdrop-filter: blur(20px);
+  transition: 0.4s;
 }
 
 .card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 0 30px rgba(0,255,150,0.3);
+  background: rgba(255,255,255,0.08);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px;
+  color: #555;
 }
 
 /* Animation */
@@ -112,68 +136,61 @@ section {
     transform: translateY(0);
   }
 }
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-}
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="container">
-    <h1>Tap your card<br>on your phone</h1>
-    <p>Experience next-gen contactless payments</p>
+<!-- NAV -->
+<div class="nav">
+  <div class="logo">TapBridge</div>
+</div>
 
-    <a class="btn" href="test.html">Try Live Demo</a>
-  </div>
-</section>
+<!-- HERO -->
+<div class="hero">
+  <h1>Tap your card<br>on your phone</h1>
+  <p>Seamless contactless payments powered by NFC</p>
+
+  <a class="btn" href="test.html">Try Live Demo</a>
+</div>
 
 <!-- HOW IT WORKS -->
 <section>
-  <div class="container">
-    <h2>How it works</h2>
+  <h2 style="font-size:32px;">How it works</h2>
 
-    <div class="steps">
+  <div class="cards">
 
-      <div class="card">
-        <h3>Tap</h3>
-        <p>Place card on phone back</p>
-      </div>
-
-      <div class="card">
-        <h3>Detect</h3>
-        <p>NFC instantly reads card</p>
-      </div>
-
-      <div class="card">
-        <h3>Pay</h3>
-        <p>Secure payment in seconds</p>
-      </div>
-
+    <div class="card">
+      <h3>Tap</h3>
+      <p>Tap your card on the back of your phone</p>
     </div>
+
+    <div class="card">
+      <h3>Detect</h3>
+      <p>NFC instantly reads your card securely</p>
+    </div>
+
+    <div class="card">
+      <h3>Pay</h3>
+      <p>Payment processed within seconds</p>
+    </div>
+
   </div>
 </section>
 
 <!-- NFC SECTION -->
 <section>
-  <div class="container">
-    <h2>Powered by NFC</h2>
-    <p>Seamless tap-to-pay experience without POS machines</p>
-  </div>
+  <h2>Powered by NFC</h2>
+  <p style="color:#888; max-width:600px; margin:auto;">
+    TapBridge enables next-generation payments using NFC technology,
+    allowing users to tap their card directly on their phone and complete transactions instantly.
+  </p>
 </section>
 
 <!-- CTA -->
 <section>
-  <div class="container">
-    <h2>Ready to try TapBridge?</h2>
-    <a class="btn" href="test.html">Start Now</a>
-  </div>
+  <h2>Experience the future of payments</h2>
+  <a class="btn" href="test.html">Start Now</a>
 </section>
 
 <footer>
