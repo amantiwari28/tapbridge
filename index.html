@@ -1,28 +1,156 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Test Payment</title>
+  <meta charset="UTF-8" />
+  <title>TapBridge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- ✅ REQUIRED -->
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #fff;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+      text-align: center;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    h1 {
+      font-size: 60px;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 32px;
+    }
+
+    p {
+      color: #aaa;
+      font-size: 16px;
+    }
+
+    .btn {
+      padding: 12px 26px;
+      background: white;
+      color: black;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ddd;
+    }
+
+    .steps {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      background: #111;
+      padding: 20px;
+      border-radius: 12px;
+      width: 250px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
     }
   </style>
-
 </head>
 
 <body>
 
-<h2>Test Payment Page</h2>
+<!-- HERO SECTION -->
+<section style="height:100vh; display:flex; align-items:center; justify-content:center;">
+  <div class="container">
+    <h1>
+      Tap your card<br>on your phone
+    </h1>
 
-<script src="./checkout.js"></script>
+    <p>
+      Experience contactless payments like never before.
+    </p>
 
-<script>
-  window.onload = function () {
-    TapBridge.init();
-  };
-</script>
+    <br><br>
+
+    <a class="btn" href="test.html">
+      Try Live Demo
+    </a>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="container">
+    <h2>How it works</h2>
+
+    <div class="steps">
+
+      <div class="card">
+        <h3>1. Tap Card</h3>
+        <p>Place your card on the back of your phone</p>
+      </div>
+
+      <div class="card">
+        <h3>2. Detect</h3>
+        <p>NFC detects your card instantly</p>
+      </div>
+
+      <div class="card">
+        <h3>3. Pay</h3>
+        <p>Payment processed securely in seconds</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NFC SECTION -->
+<section style="background:#111;">
+  <div class="container">
+    <h2>Powered by NFC</h2>
+    <p>
+      TapBridge uses Near Field Communication (NFC) technology to enable
+      fast, secure, and contactless card payments directly from your phone.
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="container">
+    <h2>Ready to experience the future?</h2>
+    <br>
+    <a class="btn" href="test.html">
+      Try Now
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  TapBridge © 2026
+</footer>
 
 </body>
 </html>

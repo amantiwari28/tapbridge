@@ -1,0 +1,28 @@
+<html>
+<head>
+  <title>Test Payment</title>
+
+  <!-- ✅ REQUIRED -->
+  <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<h2>Test Payment Page</h2>
+
+<script src="./checkout.js"></script>
+
+<script>
+  window.onload = function () {
+    TapBridge.init();
+  };
+</script>
+
+</body>
+</html>
