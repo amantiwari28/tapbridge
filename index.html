@@ -17,7 +17,7 @@ body{
   overflow-x:hidden;
 }
 
-/* GLOW */
+/* GLOW BACKGROUND */
 body::before{
   content:"";
   position:fixed;
@@ -30,7 +30,7 @@ body::before{
   z-index:-1;
 }
 
-/* HERO VIDEO */
+/* HERO */
 .hero{
   position:relative;
   height:100vh;
@@ -91,10 +91,9 @@ p{
   transition:0.3s;
   box-shadow:0 10px 40px rgba(0,255,150,0.4);
 }
-
 .btn:hover{transform:scale(1.08);}
 
-/* PHONE MOCKUP */
+/* PHONE */
 .phone{
   margin-top:40px;
   width:220px;
@@ -115,22 +114,48 @@ p{
   position:relative;
 }
 
-.nfc-card{
+/* NFC TAP ANIMATION */
+.tap-area{
+  position:relative;
+  width:100%;
+  height:100%;
+}
+
+.phone-glow{
+  position:absolute;
+  width:120px;
+  height:120px;
+  background:radial-gradient(circle, rgba(0,255,150,0.6), transparent);
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  animation:pulse 2s infinite;
+}
+
+.card{
   width:140px;
   height:90px;
   background:linear-gradient(135deg,#00ff99,#00ccff);
   border-radius:12px;
   position:absolute;
-  top:60%;
+  top:70%;
   left:50%;
   transform:translate(-50%,-50%);
-  animation:tapCard 2s infinite ease-in-out;
+  animation:tap 2s infinite;
 }
 
-@keyframes tapCard{
-  0%{transform:translate(-50%,-50%) scale(1);}
-  50%{transform:translate(-50%,-70%) scale(1.1);}
-  100%{transform:translate(-50%,-50%) scale(1);}
+@keyframes tap{
+  0%{transform:translate(-50%,-50%);opacity:0;}
+  40%{transform:translate(-50%,-80%);opacity:1;}
+  70%{transform:translate(-50%,-60%);}
+  100%{transform:translate(-50%,-50%);opacity:0;}
+}
+
+@keyframes pulse{
+  0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.5;}
+  50%{transform:translate(-50%,-50%) scale(1.2);opacity:1;}
+  100%{transform:translate(-50%,-50%) scale(0.8);opacity:0.5;}
 }
 
 /* SECTIONS */
@@ -162,7 +187,6 @@ p{
   transform:translateY(-10px) scale(1.05);
 }
 
-/* STORY */
 .story{
   font-size:36px;
   max-width:600px;
@@ -172,21 +196,18 @@ p{
   transform:translateY(50px);
 }
 
-/* SHOW */
 .show{
   opacity:1 !important;
   transform:translateY(0) !important;
   transition:0.8s ease;
 }
 
-/* FOOTER */
 footer{
   text-align:center;
   padding:20px;
   color:#666;
 }
 
-/* ANIMATION */
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(40px);}
   to{opacity:1;transform:translateY(0);}
@@ -196,56 +217,41 @@ footer{
 
 <body>
 
-<!-- HERO -->
 <section class="hero">
 
-  <!-- VIDEO -->
+  <!-- WORKING VIDEO -->
   <video autoplay muted loop playsinline class="bg-video">
-  <source src="video.mp4" type="video/mp4">
-</video>
+    <source src="https://videos.pexels.com/video-files/4383317/4383317-hd_1920_1080_30fps.mp4" type="video/mp4">
+  </video>
 
   <div class="overlay"></div>
 
-  <!-- CONTENT -->
   <div class="hero-content">
     <h1>Tap your card<br>on your phone</h1>
     <p>Just tap. No QR. No friction.</p>
+
     <a href="test.html" class="btn">Try Demo</a>
 
-    <!-- PHONE -->
     <div class="phone">
       <div class="screen">
-        <div class="nfc-card"></div>
+        <div class="tap-area">
+          <div class="phone-glow"></div>
+          <div class="card"></div>
+        </div>
       </div>
     </div>
-
   </div>
-
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="section">
   <h2>How it works</h2>
-
   <div class="cards">
-    <div class="feature-card">
-      <h3>Tap Card</h3>
-      <p>Place card on back of phone</p>
-    </div>
-
-    <div class="feature-card">
-      <h3>Detect</h3>
-      <p>NFC instantly reads card</p>
-    </div>
-
-    <div class="feature-card">
-      <h3>Pay</h3>
-      <p>Secure payment in seconds</p>
-    </div>
+    <div class="feature-card"><h3>Tap Card</h3><p>Place card on back</p></div>
+    <div class="feature-card"><h3>Detect</h3><p>NFC reads instantly</p></div>
+    <div class="feature-card"><h3>Pay</h3><p>Secure payment</p></div>
   </div>
 </section>
 
-<!-- STORY -->
 <section class="section">
   <div class="story">
     No QR codes. No friction.<br>
@@ -253,31 +259,25 @@ footer{
   </div>
 </section>
 
-<!-- NFC -->
 <section class="section" style="background:#111;">
   <h2>Powered by NFC</h2>
-  <p>TapBridge uses NFC technology for seamless payments</p>
+  <p>Seamless contactless payments</p>
 </section>
 
-<!-- CTA -->
 <section class="section">
   <h2>Ready for future payments?</h2>
   <a href="test.html" class="btn">Try Now</a>
 </section>
 
-<footer>
-  TapBridge © 2026
-</footer>
+<footer>TapBridge © 2026</footer>
 
 <script>
 const elements = document.querySelectorAll(".feature-card, .story");
 
 window.addEventListener("scroll", () => {
   const trigger = window.innerHeight * 0.85;
-
   elements.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if (top < trigger) {
+    if (el.getBoundingClientRect().top < trigger) {
       el.classList.add("show");
     }
   });
