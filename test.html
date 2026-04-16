@@ -1,27 +1,126 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Test Payment</title>
+<meta charset="UTF-8">
+<title>TapBridge Payment</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ✅ REQUIRED -->
-  <style>
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: white;
+}
+
+/* Center layout */
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Card UI */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  width: 320px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+/* Title */
+.title {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+/* Button */
+.pay-btn {
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(135deg,#00ff99,#00ccff);
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.pay-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Loader */
+.loader {
+  border: 3px solid #333;
+  border-top: 3px solid #00ff99;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+.status {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #aaa;
+}
+</style>
 </head>
 
 <body>
 
-<h2>Test Payment Page</h2>
+<div class="container">
+  <div class="card">
+
+    <div class="title">TapBridge Payment</div>
+    <div class="subtitle">Tap your card or scan QR to pay</div>
+
+    <button id="payBtn" class="pay-btn">
+      Pay ₹1000
+    </button>
+
+    <div id="loader" class="loader"></div>
+    <div id="status" class="status"></div>
+
+  </div>
+</div>
 
 <script src="./checkout.js"></script>
 
 <script>
-  window.onload = function () {
-    TapBridge.init();
-  };
+document.getElementById("payBtn").onclick = function () {
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("status").innerText = "Initializing payment...";
+
+  TapBridge.init();
+};
 </script>
 
 </body>

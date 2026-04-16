@@ -2,200 +2,287 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>TapBridge</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TapBridge</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:#000;
+  color:#fff;
+  overflow-x:hidden;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: #0a0a0a;
-  color: white;
-  overflow-x: hidden;
+/* GLOW */
+body::before{
+  content:"";
+  position:fixed;
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle,#00ff99,transparent);
+  filter:blur(120px);
+  top:-150px;
+  left:-150px;
+  z-index:-1;
 }
 
-/* Glow background */
-body::before {
-  content: "";
-  position: fixed;
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
-  top: -200px;
-  left: -200px;
-  filter: blur(120px);
+/* HERO VIDEO */
+.hero{
+  position:relative;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
-/* Navbar */
-.nav {
-  position: fixed;
-  width: 100%;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  z-index: 1000;
+/* VIDEO */
+.bg-video{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  top:0;
+  left:0;
 }
 
-.logo {
-  font-weight: 600;
-  font-size: 18px;
+/* OVERLAY */
+.overlay{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
 }
 
-/* Hero */
-.hero {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-direction: column;
-  padding: 0 20px;
+/* CONTENT */
+.hero-content{
+  position:relative;
+  z-index:2;
 }
 
-.hero h1 {
-  font-size: 64px;
-  font-weight: 600;
-  line-height: 1.2;
-  animation: fadeUp 1s ease forwards;
+h1{
+  font-size:56px;
+  line-height:1.2;
+  animation:fadeUp 1s ease forwards;
 }
 
-.hero p {
-  color: #888;
-  margin-top: 20px;
-  animation: fadeUp 1.5s ease forwards;
+p{
+  color:#aaa;
+  margin-top:20px;
+  font-size:18px;
+  animation:fadeUp 1.2s ease forwards;
 }
 
-/* Button */
-.btn {
-  margin-top: 30px;
-  padding: 14px 30px;
-  border-radius: 30px;
-  background: white;
-  color: black;
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.3s;
+/* BUTTON */
+.btn{
+  display:inline-block;
+  margin-top:30px;
+  padding:14px 30px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#00ff99,#00ccff);
+  color:black;
+  font-weight:bold;
+  text-decoration:none;
+  transition:0.3s;
+  box-shadow:0 10px 40px rgba(0,255,150,0.4);
 }
 
-.btn:hover {
-  transform: scale(1.05);
+.btn:hover{transform:scale(1.08);}
+
+/* PHONE MOCKUP */
+.phone{
+  margin-top:40px;
+  width:220px;
+  height:440px;
+  border-radius:40px;
+  background:#111;
+  box-shadow:0 0 60px rgba(0,255,150,0.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* Sections */
-section {
-  padding: 120px 20px;
-  text-align: center;
+.screen{
+  width:90%;
+  height:90%;
+  background:black;
+  border-radius:30px;
+  position:relative;
 }
 
-/* Cards */
-.cards {
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 60px;
+.nfc-card{
+  width:140px;
+  height:90px;
+  background:linear-gradient(135deg,#00ff99,#00ccff);
+  border-radius:12px;
+  position:absolute;
+  top:60%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  animation:tapCard 2s infinite ease-in-out;
 }
 
-.card {
-  background: rgba(255,255,255,0.04);
-  padding: 30px;
-  border-radius: 20px;
-  width: 260px;
-  backdrop-filter: blur(20px);
-  transition: 0.4s;
+@keyframes tapCard{
+  0%{transform:translate(-50%,-50%) scale(1);}
+  50%{transform:translate(-50%,-70%) scale(1.1);}
+  100%{transform:translate(-50%,-50%) scale(1);}
 }
 
-.card:hover {
-  transform: translateY(-10px);
-  background: rgba(255,255,255,0.08);
+/* SECTIONS */
+.section{
+  padding:120px 20px;
+  text-align:center;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 40px;
-  color: #555;
+.cards{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  margin-top:50px;
 }
 
-/* Animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.feature-card{
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(20px);
+  padding:30px;
+  border-radius:20px;
+  width:260px;
+  transition:0.4s;
+  transform:translateY(50px);
+  opacity:0;
+}
+
+.feature-card:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+
+/* STORY */
+.story{
+  font-size:36px;
+  max-width:600px;
+  margin:auto;
+  line-height:1.4;
+  opacity:0;
+  transform:translateY(50px);
+}
+
+/* SHOW */
+.show{
+  opacity:1 !important;
+  transform:translateY(0) !important;
+  transition:0.8s ease;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  color:#666;
+}
+
+/* ANIMATION */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAV -->
-<div class="nav">
-  <div class="logo">TapBridge</div>
-</div>
-
 <!-- HERO -->
-<div class="hero">
-  <h1>Tap your card<br>on your phone</h1>
-  <p>Seamless contactless payments powered by NFC</p>
+<section class="hero">
 
-  <a class="btn" href="test.html">Try Live Demo</a>
-</div>
+  <!-- VIDEO -->
+  <video autoplay muted loop playsinline class="bg-video">
+  <source src="video.mp4" type="video/mp4">
+</video>
 
-<!-- HOW IT WORKS -->
-<section>
-  <h2 style="font-size:32px;">How it works</h2>
+  <div class="overlay"></div>
 
-  <div class="cards">
+  <!-- CONTENT -->
+  <div class="hero-content">
+    <h1>Tap your card<br>on your phone</h1>
+    <p>Just tap. No QR. No friction.</p>
+    <a href="test.html" class="btn">Try Demo</a>
 
-    <div class="card">
-      <h3>Tap</h3>
-      <p>Tap your card on the back of your phone</p>
-    </div>
-
-    <div class="card">
-      <h3>Detect</h3>
-      <p>NFC instantly reads your card securely</p>
-    </div>
-
-    <div class="card">
-      <h3>Pay</h3>
-      <p>Payment processed within seconds</p>
+    <!-- PHONE -->
+    <div class="phone">
+      <div class="screen">
+        <div class="nfc-card"></div>
+      </div>
     </div>
 
   </div>
+
 </section>
 
-<!-- NFC SECTION -->
-<section>
+<!-- HOW IT WORKS -->
+<section class="section">
+  <h2>How it works</h2>
+
+  <div class="cards">
+    <div class="feature-card">
+      <h3>Tap Card</h3>
+      <p>Place card on back of phone</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Detect</h3>
+      <p>NFC instantly reads card</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Pay</h3>
+      <p>Secure payment in seconds</p>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="section">
+  <div class="story">
+    No QR codes. No friction.<br>
+    Just tap your card and pay instantly.
+  </div>
+</section>
+
+<!-- NFC -->
+<section class="section" style="background:#111;">
   <h2>Powered by NFC</h2>
-  <p style="color:#888; max-width:600px; margin:auto;">
-    TapBridge enables next-generation payments using NFC technology,
-    allowing users to tap their card directly on their phone and complete transactions instantly.
-  </p>
+  <p>TapBridge uses NFC technology for seamless payments</p>
 </section>
 
 <!-- CTA -->
-<section>
-  <h2>Experience the future of payments</h2>
-  <a class="btn" href="test.html">Start Now</a>
+<section class="section">
+  <h2>Ready for future payments?</h2>
+  <a href="test.html" class="btn">Try Now</a>
 </section>
 
 <footer>
   TapBridge © 2026
 </footer>
+
+<script>
+const elements = document.querySelectorAll(".feature-card, .story");
+
+window.addEventListener("scroll", () => {
+  const trigger = window.innerHeight * 0.85;
+
+  elements.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < trigger) {
+      el.classList.add("show");
+    }
+  });
+});
+</script>
 
 </body>
 </html>
